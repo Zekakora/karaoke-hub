@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="launcher-token" content="__LAUNCHER_TOKEN__" />
+    <title>LC AACHEN Karaoke Console</title>
+    <link rel="icon" type="image/png" href="/ICON.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <img class="logo" src="/ICON.png" alt="LC AACHEN" />
+          <div>
+            <h1 data-i18n="app.heading">LC AACHEN Karaoke Console</h1>
+            <p class="muted" id="version">Console</p>
+          </div>
+        </div>
+        <div class="chips">
+          <span class="chip" id="chip-service"><i></i>Service · Stopped</span>
+          <span class="chip" id="chip-tunnel"><i></i>Tunnel · Off</span>
+          <select id="language-select" class="lang-select" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="panel control">
+          <div class="actions">
+            <button class="btn primary" id="btn-start" type="button" data-i18n="button.start">Start service</button>
+            <button class="btn" id="btn-restart" type="button" data-i18n="button.restart">Restart service</button>
+            <button class="btn danger" id="btn-stop" type="button" data-i18n="button.stop">Stop service</button>
+            <button class="btn accent" id="btn-tunnel" type="button">Enable tunnel</button>
+            <button class="btn ghost" id="btn-settings" type="button" data-i18n="button.settings">Settings</button>
+          </div>
+
+          <div class="addresses">
+            <div class="address">
+              <span class="label" data-i18n="address.local">Local</span>
+              <code id="addr-local">--</code>
+              <button class="copy" type="button" data-copy="addr-local" data-i18n="button.copy">Copy</button>
+            </div>
+            <div class="address">
+              <span class="label" data-i18n="address.lan">LAN</span>
+              <code id="addr-lan">--</code>
+              <button class="copy" type="button" data-copy="addr-lan" data-i18n="button.copy">Copy</button>
+            </div>
+            <div class="address">
+              <span class="label" data-i18n="address.public">Public</span>
+              <code id="addr-public">--</code>
+              <button class="copy" type="button" data-copy="addr-public" data-i18n="button.copy">Copy</button>
+            </div>
+          </div>
+
+          <div class="notice" id="notice" hidden></div>
+        </section>
+
+        <section class="panel logs">
+          <header class="panel-head">
+            <h2 data-i18n="log.title">Runtime log</h2>
+            <div class="log-actions">
+              <span class="muted" id="log-file"></span>
+              <button class="btn tiny ghost" id="btn-clear-log" type="button" data-i18n="button.clear">Clear</button>
+            </div>
+          </header>
+          <div class="log" id="log" role="log" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="settings-dialog">
+      <form id="settings-form">
+        <header>
+          <h2 data-i18n="settings.title">Settings</h2>
+          <p class="muted" data-i18n="settings.desc">Port, DJ password and API key take effect after a service restart.</p>
+        </header>
+
+        <div class="fields">
+          <label class="field">
+            <span data-i18n="settings.port">Service port</span>
+            <input type="number" name="port" min="1024" max="65535" required />
+            <small data-i18n="settings.portHint">Guests and the DJ console use this port (default 3000).</small>
+          </label>
+
+          <label class="field">
+            <span data-i18n="settings.password">DJ password</span>
+            <span class="input-row">
+              <input type="password" name="djPassword" minlength="4" required />
+              <button type="button" class="btn tiny ghost" id="btn-reveal" data-i18n="button.show">Show</button>
+            </span>
+            <small data-i18n="settings.passwordHint">Generated on first launch; change it to something easy to type.</small>
+          </label>
+
+          <label class="field">
+            <span data-i18n="settings.apiKey">YouTube API key (optional)</span>
+            <input type="text" name="youtubeApiKey" placeholder="" autocomplete="off" />
+            <small data-i18n="settings.apiKeyHint">Leave empty to use the built-in demo catalog.</small>
+          </label>
+
+          <label class="field">
+            <span data-i18n="settings.cloudflared">cloudflared path (optional)</span>
+            <input type="text" name="cloudflaredPath" placeholder="bin\cloudflared.exe" />
+            <small id="cloudflared-hint" data-i18n="settings.cloudflaredHint">Empty: bin\cloudflared.exe or the system PATH is used.</small>
+          </label>
+
+          <label class="field">
+            <span data-i18n="settings.fixedUrl">Fixed public URL (optional)</span>
+            <input type="url" name="fixedPublicUrl" placeholder="https://karaoke.example.com" />
+            <small data-i18n="settings.fixedUrlHint">For your own domain or a named tunnel; quick tunnels override it.</small>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" name="autoStart" />
+            <span data-i18n="settings.autoStart">Open the tunnel automatically when the service starts</span>
+          </label>
+        </div>
+
+        <footer>
+          <span class="muted" id="settings-path"></span>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" id="btn-settings-cancel" data-i18n="button.cancel">Cancel</button>
+            <button type="submit" class="btn primary" id="btn-settings-save" data-i18n="button.save">Save</button>
+          </div>
+        </footer>
+      </form>
+    </dialog>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
